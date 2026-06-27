@@ -8,6 +8,14 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react"
 import { submitAuditRequest } from "@/app/actions/submitAudit"
 
+// Disable Zod v4's JIT validator compilation. By default Zod probes for
+// runtime code-generation support via `new Function("")`, which trips the
+// strict Content-Security-Policy `eval` directive (we intentionally do NOT
+// allow 'unsafe-eval') and surfaces as a CSP violation in the browser. The
+// jitless interpreter path performs identical validation without the probe.
+// Must run before the first schema parse (Zod memoises the probe result).
+z.config({ jitless: true })
+
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
@@ -83,6 +91,7 @@ export default function AuditForm() {
               day with your free audit report.
             </p>
             <button
+              type="button"
               onClick={() => setSubmitted(false)}
               className="text-sky-400 hover:text-sky-300 text-sm underline underline-offset-2 transition-colors mt-2"
             >
@@ -96,61 +105,105 @@ export default function AuditForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onSubmit={handleSubmit(onSubmit)}
+            aria-label="Free website audit request"
             className="grid grid-cols-1 sm:grid-cols-2 gap-4"
           >
             {/* Name */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-300 text-xs font-medium uppercase tracking-wide">
+              <label
+                htmlFor="audit-name"
+                className="text-slate-300 text-xs font-medium uppercase tracking-wide"
+              >
                 Your Name *
               </label>
               <input
                 {...register("name")}
+                id="audit-name"
+                type="text"
+                autoComplete="name"
+                aria-required="true"
+                aria-invalid={errors.name ? "true" : "false"}
+                aria-describedby={errors.name ? "audit-name-error" : undefined}
                 placeholder="John Smith"
                 className={inputClass}
               />
               {errors.name && (
-                <span className="text-red-400 text-xs">{errors.name.message}</span>
+                <span id="audit-name-error" role="alert" className="text-red-400 text-xs">
+                  {errors.name.message}
+                </span>
               )}
             </div>
 
             {/* Email */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-300 text-xs font-medium uppercase tracking-wide">
+              <label
+                htmlFor="audit-email"
+                className="text-slate-300 text-xs font-medium uppercase tracking-wide"
+              >
                 Email Address *
               </label>
               <input
                 {...register("email")}
+                id="audit-email"
                 type="email"
+                inputMode="email"
+                autoComplete="email"
+                aria-required="true"
+                aria-invalid={errors.email ? "true" : "false"}
+                aria-describedby={errors.email ? "audit-email-error" : undefined}
                 placeholder="john@yourbusiness.com"
                 className={inputClass}
               />
               {errors.email && (
-                <span className="text-red-400 text-xs">{errors.email.message}</span>
+                <span id="audit-email-error" role="alert" className="text-red-400 text-xs">
+                  {errors.email.message}
+                </span>
               )}
             </div>
 
             {/* Website */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-300 text-xs font-medium uppercase tracking-wide">
+              <label
+                htmlFor="audit-website"
+                className="text-slate-300 text-xs font-medium uppercase tracking-wide"
+              >
                 Current Website
               </label>
               <input
                 {...register("website")}
+                id="audit-website"
+                type="url"
+                inputMode="url"
+                autoComplete="url"
+                aria-invalid={errors.website ? "true" : "false"}
+                aria-describedby={errors.website ? "audit-website-error" : undefined}
                 placeholder="https://yourbusiness.com"
                 className={inputClass}
               />
               {errors.website && (
-                <span className="text-red-400 text-xs">{errors.website.message}</span>
+                <span id="audit-website-error" role="alert" className="text-red-400 text-xs">
+                  {errors.website.message}
+                </span>
               )}
             </div>
 
             {/* Business Type */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-slate-300 text-xs font-medium uppercase tracking-wide">
+              <label
+                htmlFor="audit-business-type"
+                className="text-slate-300 text-xs font-medium uppercase tracking-wide"
+              >
                 Business Type *
               </label>
               <select
                 {...register("businessType")}
+                id="audit-business-type"
+                autoComplete="off"
+                aria-required="true"
+                aria-invalid={errors.businessType ? "true" : "false"}
+                aria-describedby={
+                  errors.businessType ? "audit-business-type-error" : undefined
+                }
                 className={`${inputClass} cursor-pointer`}
                 defaultValue=""
               >
@@ -164,17 +217,28 @@ export default function AuditForm() {
                 ))}
               </select>
               {errors.businessType && (
-                <span className="text-red-400 text-xs">{errors.businessType.message}</span>
+                <span
+                  id="audit-business-type-error"
+                  role="alert"
+                  className="text-red-400 text-xs"
+                >
+                  {errors.businessType.message}
+                </span>
               )}
             </div>
 
             {/* Message */}
             <div className="flex flex-col gap-1.5 sm:col-span-2">
-              <label className="text-slate-300 text-xs font-medium uppercase tracking-wide">
+              <label
+                htmlFor="audit-message"
+                className="text-slate-300 text-xs font-medium uppercase tracking-wide"
+              >
                 Anything else we should know? (optional)
               </label>
               <textarea
                 {...register("message")}
+                id="audit-message"
+                autoComplete="off"
                 rows={3}
                 placeholder="Tell us about your biggest challenge or what you're trying to improve..."
                 className={`${inputClass} resize-none`}

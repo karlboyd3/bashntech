@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://bashntech.com/sitemap.xml",
+    sitemap: "https://www.bashntech.com/sitemap.xml",
   }
 }

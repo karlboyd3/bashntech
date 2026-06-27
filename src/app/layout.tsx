@@ -16,11 +16,20 @@ const geistMono = Geist_Mono({
   display: "swap",
 })
 
+// Force dynamic rendering so Next.js injects the per-request CSP nonce
+// (from src/proxy.ts) into its inline bootstrap/RSC scripts. Without this the
+// page is statically prerendered and the nonce would never be applied, causing
+// the strict CSP to block Next's own scripts.
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bashntech.com"),
+  metadataBase: new URL("https://www.bashntech.com"),
   title: "BashNTech | Websites, Data, AI and More for Local Businesses",
   description:
     "BashNTech helps local businesses grow and operate better with custom websites, data analysis, AI integration, process efficiency, and targeted advertising.",
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "custom website design",
     "local business websites",
@@ -40,7 +49,7 @@ export const metadata: Metadata = {
       "Custom websites, data analysis, AI integration, and advertising for businesses that want to grow without getting buried in the tech.",
     type: "website",
     siteName: "BashNTech",
-    url: "https://bashntech.com",
+    url: "https://www.bashntech.com",
   },
   twitter: {
     card: "summary_large_image",
