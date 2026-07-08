@@ -17,9 +17,16 @@ import { NextRequest, NextResponse } from "next/server"
  *   execution vector; nonce/hash for these is impractical with this stack.
  */
 function buildCsp(nonce: string): string {
+  // React's dev-mode debugging (callstack reconstruction, Fast Refresh) requires
+  // eval(). This is DEV ONLY — production keeps the strict, eval-free policy.
+  const scriptSrc =
+    process.env.NODE_ENV === "development"
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-eval'`
+      : `script-src 'self' 'nonce-${nonce}'`
+
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
+    scriptSrc,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
