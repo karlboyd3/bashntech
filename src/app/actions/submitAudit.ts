@@ -2,6 +2,7 @@
 
 import { createServerClient } from "@/lib/supabase"
 import { Resend } from "resend"
+import { auditSchema } from "@/lib/auditSchema"
 
 interface AuditRequestData {
   name: string
@@ -11,7 +12,20 @@ interface AuditRequestData {
   message?: string
 }
 
-export async function submitAuditRequest(data: AuditRequestData) {
+export async function submitAuditRequest(input: AuditRequestData) {
+  // Re-validate on the server so field limits hold even when the client-side
+  // form validation is bypassed.
+  const parsed = auditSchema.safeParse({
+    ...input,
+    website: input.website ?? "",
+    message: input.message ?? "",
+  })
+
+  if (!parsed.success) {
+    throw new Error("Invalid form submission. Please check your entries and try again.")
+  }
+
+  const data = parsed.data
   const supabase = createServerClient()
 
   // Save to Supabase (non-blocking — email still sends if this fails)

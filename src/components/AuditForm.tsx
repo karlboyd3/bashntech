@@ -7,6 +7,7 @@ import { z } from "zod"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react"
 import { submitAuditRequest } from "@/app/actions/submitAudit"
+import { auditSchema, businessTypes, AUDIT_LIMITS, type AuditFormData } from "@/lib/auditSchema"
 
 // Disable Zod v4's JIT validator compilation. By default Zod probes for
 // runtime code-generation support via `new Function("")`, which trips the
@@ -16,27 +17,7 @@ import { submitAuditRequest } from "@/app/actions/submitAudit"
 // Must run before the first schema parse (Zod memoises the probe result).
 z.config({ jitless: true })
 
-const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  website: z.string().url("Please enter a valid URL (include https://)").or(z.literal("")),
-  businessType: z.string().min(1, "Please select your business type"),
-  message: z.string().optional(),
-})
-
-type FormData = z.infer<typeof schema>
-
-const businessTypes = [
-  "Contractor / Trades",
-  "Restaurant / Food",
-  "Auto Shop",
-  "Landscaping",
-  "Home Services",
-  "Repair Shop",
-  "Retail",
-  "Healthcare / Medical",
-  "Other Local Business",
-]
+type FormData = AuditFormData
 
 export default function AuditForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -47,7 +28,7 @@ export default function AuditForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<FormData>({ resolver: zodResolver(schema) })
+  } = useForm<FormData>({ resolver: zodResolver(auditSchema) })
 
   const onSubmit = async (data: FormData) => {
     setServerError(null)
@@ -120,6 +101,7 @@ export default function AuditForm() {
                 {...register("name")}
                 id="audit-name"
                 type="text"
+                maxLength={AUDIT_LIMITS.name}
                 autoComplete="name"
                 aria-required="true"
                 aria-invalid={errors.name ? "true" : "false"}
@@ -146,6 +128,7 @@ export default function AuditForm() {
                 {...register("email")}
                 id="audit-email"
                 type="email"
+                maxLength={AUDIT_LIMITS.email}
                 inputMode="email"
                 autoComplete="email"
                 aria-required="true"
@@ -173,6 +156,7 @@ export default function AuditForm() {
                 {...register("website")}
                 id="audit-website"
                 type="url"
+                maxLength={AUDIT_LIMITS.website}
                 inputMode="url"
                 autoComplete="url"
                 aria-invalid={errors.website ? "true" : "false"}
@@ -238,11 +222,19 @@ export default function AuditForm() {
               <textarea
                 {...register("message")}
                 id="audit-message"
+                maxLength={AUDIT_LIMITS.message}
                 autoComplete="off"
                 rows={3}
+                aria-invalid={errors.message ? "true" : "false"}
+                aria-describedby={errors.message ? "audit-message-error" : undefined}
                 placeholder="Tell us about your biggest challenge or what you're trying to improve..."
                 className={`${inputClass} resize-none`}
               />
+              {errors.message && (
+                <span id="audit-message-error" role="alert" className="text-red-400 text-xs">
+                  {errors.message.message}
+                </span>
+              )}
             </div>
 
             {/* Server error */}
