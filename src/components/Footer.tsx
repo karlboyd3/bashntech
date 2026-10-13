@@ -6,20 +6,19 @@ import Image from "next/image"
 import Link from "next/link"
 
 const serviceLinks = [
-  { label: "Custom Website Design", href: "#services" },
-  { label: "Website Redesigns", href: "#services" },
-  { label: "AI Chatbots & Automation", href: "#services" },
-  { label: "Data Dashboards", href: "#services" },
-  { label: "Local SEO", href: "#services" },
-  { label: "Ongoing Maintenance", href: "#services" },
+  { label: "Website Design & Redesigns", href: "/websites" },
+  { label: "Local SEO & Google Visibility", href: "/websites" },
+  { label: "AI Consulting", href: "/ai-consulting" },
+  { label: "Crew & Subcontractor Scheduling", href: "/ai-consulting" },
+  { label: "Paperwork Automation", href: "/ai-consulting" },
+  { label: "Custom AI Models & Dashboards", href: "/ai-consulting" },
 ]
 
 const companyLinks = [
-  { label: "Who We Help", href: "#who-we-help" },
-  { label: "Why BashNTech", href: "#who-we-help" },
-  { label: "Our Process", href: "#process" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Free Website Audit", href: "#featured-offer" },
+  { label: "Home", href: "/" },
+  { label: "Our Work", href: "/work" },
+  { label: "Contact", href: "/contact" },
+  { label: "Free Consultation", href: "/contact" },
 ]
 
 const socialLinks = [
@@ -65,12 +64,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-slate-950 border-t border-sky-500/10 overflow-hidden">
-      {/* Top gradient fade */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent" />
+    <footer className="relative bg-sand border-t border-sand-dark overflow-hidden">
 
-      {/* Subtle dot grid */}
-      <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -86,9 +81,9 @@ export default function Footer() {
             className="lg:col-span-1"
           >
             {/* Logo */}
-            <Link href="#" className="inline-block mb-4 group">
+            <Link href="/" className="inline-block mb-4 group">
               <Image
-                src="/logo8.png"
+                src="/logo-light.png"
                 alt="BashNTech Logo"
                 width={130}
                 height={36}
@@ -96,15 +91,15 @@ export default function Footer() {
               />
             </Link>
 
-            <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
-              Built for businesses that get their hands dirty. Websites, AI tools,
-              and automation for local businesses that are serious about growth.
+            <p className="text-ink-soft text-sm leading-relaxed mb-6 max-w-xs">
+              Websites that win customers and AI that gives you your time back,
+              for small businesses that are serious about growth.
             </p>
 
             {/* Contact */}
             <a
               href="mailto:karl.boyd003@gmail.com"
-              className="flex items-center gap-2 text-slate-400 hover:text-sky-400 text-sm transition-colors duration-200 mb-6"
+              className="flex items-center gap-2 text-ink-soft hover:text-brand text-sm transition-colors duration-200 mb-6"
             >
               <Mail className="w-4 h-4" />
               karl.boyd003@gmail.com
@@ -112,12 +107,13 @@ export default function Footer() {
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
+              {/* Icons with a placeholder "#" href stay hidden until a real profile URL is set. */}
+              {socialLinks.filter((social) => social.href !== "#").map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-8 h-8 bg-white/5 hover:bg-sky-500/15 border border-white/8 hover:border-sky-500/30 rounded-lg flex items-center justify-center text-slate-500 hover:text-sky-400 transition-all duration-200"
+                  className="w-8 h-8 bg-white border border-sand-dark rounded-lg flex items-center justify-center text-ink-soft hover:text-brand transition-colors duration-200"
                 >
                   {social.svg}
                 </a>
@@ -132,7 +128,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h4 className="text-white font-semibold text-sm mb-5 uppercase tracking-wider">
+            <h4 className="text-ink font-semibold text-sm mb-5 uppercase tracking-wider">
               Services
             </h4>
             <ul className="flex flex-col gap-3">
@@ -140,7 +136,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-slate-400 hover:text-sky-400 text-sm transition-colors duration-200"
+                    className="text-ink-soft hover:text-brand text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -156,7 +152,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <h4 className="text-white font-semibold text-sm mb-5 uppercase tracking-wider">
+            <h4 className="text-ink font-semibold text-sm mb-5 uppercase tracking-wider">
               Company
             </h4>
             <ul className="flex flex-col gap-3">
@@ -164,7 +160,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-slate-400 hover:text-sky-400 text-sm transition-colors duration-200"
+                    className="text-ink-soft hover:text-brand text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -180,37 +176,33 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h4 className="text-white font-semibold text-sm mb-5 uppercase tracking-wider">
+            <h4 className="text-ink font-semibold text-sm mb-5 uppercase tracking-wider">
               Get Started
             </h4>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">
-              Your site could be working harder. Let&apos;s find out what&apos;s
-              holding it back. For free.
+            <p className="text-ink-soft text-sm leading-relaxed mb-5">
+              Whether it&apos;s your website or your workload, let&apos;s find out
+              what&apos;s holding you back. For free.
             </p>
-            <Link href="#featured-offer">
+            <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white py-3 rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-sky-500/25"
+                className="w-full bg-brand hover:bg-brand-dark text-white py-3 rounded-full text-sm font-semibold transition-colors duration-200"
               >
-                Get Free Website Audit
+                Get a Free Consultation
               </motion.button>
             </Link>
           </motion.div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/5 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-xs">
+        <div className="border-t border-sand-dark py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-ink-soft text-xs">
             © {currentYear} BashNTech. All rights reserved.
           </p>
-          <p className="text-slate-600 text-xs italic">
-            &ldquo;Websites built to work as hard as you do.&rdquo;
+          <p className="text-ink-soft text-xs italic">
+            &ldquo;Websites that win customers. AI that gives you your time back.&rdquo;
           </p>
-          <div className="flex items-center gap-4 text-xs text-slate-500">
-            <a href="#" className="hover:text-slate-300 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-300 transition-colors">Terms</a>
-          </div>
         </div>
       </div>
     </footer>

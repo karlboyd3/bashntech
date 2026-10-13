@@ -1,11 +1,19 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/react"
+import { Geist, Geist_Mono, Fraunces } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
 import "./globals.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+})
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
 })
@@ -24,13 +32,22 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bashntech.com"),
-  title: "BashNTech | Websites, Data, AI and More for Local Businesses",
+  title: {
+    default: "BashNTech | AI Consulting & Website Design for Small Businesses",
+    template: "%s | BashNTech",
+  },
   description:
-    "BashNTech helps local businesses grow and operate better with custom websites, data analysis, AI integration, process efficiency, and targeted advertising.",
+    "BashNTech builds custom websites and AI tools for small businesses: AI consulting, custom models, crew and subcontractor scheduling, and paperwork automation that give you your time back.",
   alternates: {
     canonical: "/",
   },
   keywords: [
+    "AI consulting for small business",
+    "AI automation",
+    "contractor scheduling software",
+    "subcontractor scheduling",
+    "paperwork automation",
+    "custom AI models",
     "custom website design",
     "local business websites",
     "data analysis for small business",
@@ -44,18 +61,18 @@ export const metadata: Metadata = {
   authors: [{ name: "BashNTech" }],
   creator: "BashNTech",
   openGraph: {
-    title: "BashNTech | Websites, Data, AI and More for Local Businesses",
+    title: "BashNTech | AI Consulting & Website Design for Small Businesses",
     description:
-      "Custom websites, data analysis, AI integration, and advertising for businesses that want to grow without getting buried in the tech.",
+      "Websites that win customers and AI that gives you your time back. AI consulting, automation, and web design for small businesses.",
     type: "website",
     siteName: "BashNTech",
     url: "https://www.bashntech.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "BashNTech | Websites, Data, AI and More for Local Businesses",
+    title: "BashNTech | AI Consulting & Website Design for Small Businesses",
     description:
-      "Custom websites, data analysis, AI integration, and advertising for businesses that want to grow without getting buried in the tech.",
+      "Websites that win customers and AI that gives you your time back. AI consulting, automation, and web design for small businesses.",
   },
   robots: {
     index: true,
@@ -71,11 +88,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark`}
+      // Lets Next.js turn off CSS smooth scrolling while it jumps to the top
+      // of a newly navigated page (otherwise you land mid-page).
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
-        {children}
+        <Navbar />
+        <main className="overflow-x-hidden">{children}</main>
+        <Footer />
         <Analytics />
         <SpeedInsights />
       </body>

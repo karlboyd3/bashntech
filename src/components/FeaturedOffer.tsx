@@ -1,30 +1,22 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Shield, Clock, Gauge, CheckCircle2 } from "lucide-react"
+import { Shield, Clock, Gauge, BrainCircuit, Mail } from "lucide-react"
 import AuditForm from "@/components/AuditForm"
 
 const auditItems = [
-  { icon: Gauge, label: "Site Speed Score" },
-  { icon: Shield, label: "SEO & Visibility" },
-  { icon: CheckCircle2, label: "Design & UX Review" },
-  { icon: Clock, label: "Customer Flow Analysis" },
+  { icon: Gauge, label: "Website Speed & Design" },
+  { icon: Shield, label: "Google Visibility" },
+  { icon: Clock, label: "Where Your Hours Go" },
+  { icon: BrainCircuit, label: "What AI Could Take Over" },
 ]
 
-export default function FeaturedOffer() {
+export default function FeaturedOffer({ isPage = false }: { isPage?: boolean }) {
   return (
     <section
       id="featured-offer"
-      className="relative py-24 bg-slate-950 overflow-hidden"
+      className={`relative bg-sand overflow-hidden ${isPage ? "pt-36 pb-24 lg:pt-44" : "py-24"}`}
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sky-950/40 via-slate-950 to-blue-950/30 pointer-events-none" />
-      <div className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none" />
-
-      {/* Glow orbs */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-sky-600/8 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
-      <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-blue-600/8 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
-
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
 
@@ -35,19 +27,23 @@ export default function FeaturedOffer() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-block text-sky-400 text-xs font-semibold uppercase tracking-widest mb-5 bg-sky-500/10 border border-sky-500/20 px-3.5 py-1.5 rounded-full">
-              No Cost. No Commitment.
-            </span>
+            <p className="text-warm text-sm font-semibold tracking-wide mb-3">No cost. No commitment.</p>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-              Free Website{" "}
-              <span className="text-gradient">Audit</span>
-            </h2>
+            {isPage ? (
+              <h1 className="text-4xl sm:text-5xl font-semibold text-ink mb-6 tracking-tight leading-tight">
+                Free website &amp; <span className="marker">AI consultation</span>
+              </h1>
+            ) : (
+              <h2 className="text-4xl sm:text-5xl font-semibold text-ink mb-6 tracking-tight leading-tight">
+                Free website &amp; <span className="marker">AI consultation</span>
+              </h2>
+            )}
 
-            <p className="text-slate-300 text-lg leading-relaxed mb-8">
-              Not sure if your current website is costing you leads? We'll review
-              your site, speed, design, SEO, and customer flow. Then we show you
-              exactly what can be improved. No sales pitch. Just honest feedback.
+            <p className="text-ink-soft text-lg leading-relaxed mb-8">
+              Tell us what you need, whether that&apos;s a website that brings in
+              more customers or a way to stop losing hours to scheduling and
+              paperwork. We&apos;ll look at your business and show you exactly what
+              we&apos;d improve. No sales pitch. Just honest feedback.
             </p>
 
             {/* What we check */}
@@ -55,14 +51,24 @@ export default function FeaturedOffer() {
               {auditItems.map((item) => (
                 <div
                   key={item.label}
-                  className="flex items-center gap-2.5 bg-sky-500/8 border border-sky-500/15 rounded-xl px-4 py-3"
+                  className="flex items-center gap-2.5 bg-white border border-sand-dark rounded-xl px-4 py-3"
                 >
-                  <item.icon className="w-4 h-4 text-sky-400 flex-shrink-0" strokeWidth={1.8} />
-                  <span className="text-slate-200 text-sm font-medium">{item.label}</span>
+                  <item.icon className="w-4 h-4 text-brand flex-shrink-0" strokeWidth={1.8} />
+                  <span className="text-ink text-sm font-medium">{item.label}</span>
                 </div>
               ))}
             </div>
 
+            <p className="text-ink-soft">
+              Prefer email?{" "}
+              <a
+                href="mailto:karl.boyd003@gmail.com"
+                className="inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-semibold underline underline-offset-4"
+              >
+                <Mail className="w-4 h-4" />
+                karl.boyd003@gmail.com
+              </a>
+            </p>
           </motion.div>
 
           {/* Right — Form */}
@@ -73,15 +79,12 @@ export default function FeaturedOffer() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="relative"
           >
-            <div className="relative bg-slate-900/60 backdrop-blur-sm border border-sky-500/15 rounded-2xl p-6 sm:p-8">
-              {/* Top highlight bar */}
-              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-sky-500/50 to-transparent" />
-
-              <h3 className="text-white font-bold text-xl mb-2">
-                Request Your Free Audit
+            <div className="relative bg-white border border-sand-dark rounded-3xl p-6 sm:p-8 shadow-[0_14px_40px_rgba(28,25,23,0.08)]">
+              <h3 className="text-ink font-semibold text-xl mb-2">
+                Request Your Free Consultation
               </h3>
-              <p className="text-slate-400 text-sm mb-6">
-                Fill this out and we'll get back to you within 1 business day.
+              <p className="text-ink-soft text-sm mb-6">
+                Fill this out and we&apos;ll get back to you within 1 business day.
               </p>
 
               <AuditForm />

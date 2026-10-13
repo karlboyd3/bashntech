@@ -21,6 +21,13 @@ export const businessTypes = [
   "Other Local Business",
 ] as const
 
+export const interests = [
+  "A new or better website",
+  "AI consulting / automation",
+  "Both",
+  "Not sure yet",
+] as const
+
 export const auditSchema = z.object({
   name: z
     .string()
@@ -36,6 +43,7 @@ export const auditSchema = z.object({
     .max(AUDIT_LIMITS.website, `Website URL must be ${AUDIT_LIMITS.website} characters or less`)
     .or(z.literal("")),
   businessType: z.enum(businessTypes, { message: "Please select your business type" }),
+  interest: z.enum(interests, { message: "Please choose what you need help with" }),
   message: z
     .string()
     .max(AUDIT_LIMITS.message, `Message must be ${AUDIT_LIMITS.message} characters or less`)

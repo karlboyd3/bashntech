@@ -5,17 +5,20 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Who We Help", href: "#who-we-help" },
-  { label: "Process", href: "#process" },
-  { label: "Portfolio", href: "#portfolio" },
+  { label: "Home", href: "/" },
+  { label: "Websites", href: "/websites" },
+  { label: "AI Consulting", href: "/ai-consulting" },
+  { label: "Our Work", href: "/work" },
+  { label: "Contact", href: "/contact" },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -32,19 +35,19 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-slate-950/90 backdrop-blur-xl border-b border-sky-500/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          ? "bg-cream/90 backdrop-blur-xl border-b border-sand-dark shadow-[0_2px_20px_rgba(28,25,23,0.06)]"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="#" className="flex items-center group">
+          <Link href="/" className="flex items-center group" aria-label="BashNTech home">
             <Image
-              src="/logo8.png"
+              src="/logo-light.png"
               alt="BashNTech Logo"
-              width={120}
-              height={34}
+              width={130}
+              height={35}
               className="object-contain h-[30px] w-auto"
               priority
             />
@@ -56,23 +59,26 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-slate-300 hover:text-sky-400 text-sm font-medium transition-colors duration-200 relative group"
+                aria-current={pathname === link.href ? "page" : undefined}
+                className={`text-sm font-medium transition-colors duration-200 relative group ${
+                  pathname === link.href ? "text-ink" : "text-ink-soft hover:text-ink"
+                }`}
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-sky-400 transition-all duration-300 group-hover:w-full" />
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-warm transition-all duration-300 group-hover:w-full ${pathname === link.href ? "w-full" : "w-0"}`} />
               </Link>
             ))}
           </div>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="#featured-offer">
+            <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-sky-500/30 hover:shadow-xl"
+                className="bg-brand hover:bg-brand-dark text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200"
               >
-                Get Free Audit
+                Free Consultation
               </motion.button>
             </Link>
           </div>
@@ -80,7 +86,7 @@ export default function Navbar() {
           {/* Mobile Toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-slate-300 hover:text-white transition-colors p-1"
+            className="md:hidden text-ink-soft hover:text-ink transition-colors p-1"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -118,7 +124,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden bg-slate-950/95 backdrop-blur-xl border-b border-sky-500/10 overflow-hidden"
+            className="md:hidden bg-cream/95 backdrop-blur-xl border-b border-sand-dark overflow-hidden"
           >
             <div className="px-4 py-6 flex flex-col gap-1">
               {navLinks.map((link, i) => (
@@ -131,7 +137,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={handleLinkClick}
-                    className="flex items-center text-slate-300 hover:text-sky-400 text-base font-medium transition-colors py-3 border-b border-white/5"
+                    className="flex items-center text-ink hover:text-brand text-base font-medium transition-colors py-3 border-b border-sand-dark"
                   >
                     {link.label}
                   </Link>
@@ -143,9 +149,9 @@ export default function Navbar() {
                 transition={{ delay: navLinks.length * 0.05, duration: 0.3 }}
                 className="pt-4"
               >
-                <Link href="#featured-offer" onClick={handleLinkClick}>
-                  <button className="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-sky-500/30">
-                    Get Free Audit
+                <Link href="/contact" onClick={handleLinkClick}>
+                  <button className="w-full bg-brand hover:bg-brand-dark text-white py-3 rounded-full font-semibold transition-colors duration-200">
+                    Free Consultation
                   </button>
                 </Link>
               </motion.div>

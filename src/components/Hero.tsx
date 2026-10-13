@@ -1,175 +1,155 @@
 "use client"
 
-import dynamic from "next/dynamic"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, CalendarCheck, FileCheck2, PhoneIncoming, Check } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
-const ThreeDHeroObject = dynamic(() => import("@/components/ThreeDHeroObject"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-32 h-32 rounded-full border border-sky-500/20 animate-pulse" />
-    </div>
-  ),
-})
-
-const circuitPaths = [
-  "M 0 120 L 80 120 L 80 60 L 200 60",
-  "M 300 0 L 300 80 L 400 80 L 400 160 L 500 160",
-  "M 500 250 L 420 250 L 420 180 L 300 180",
-  "M 0 300 L 100 300 L 100 350 L 250 350",
-]
-
-const ease = "easeOut" as const
+const ease = [0.22, 1, 0.36, 1] as const
 
 function fadeIn(delay: number) {
   return {
-    initial: { opacity: 0, y: 28 },
+    initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, ease, delay },
+    transition: { duration: 0.6, ease, delay },
   }
 }
 
-function CircuitBackground() {
+const schedule = [
+  { time: "7:00", job: "Lot 14 · Framing", who: "Crew A" },
+  { time: "9:30", job: "Lot 9 · Electrical", who: "Electric sub" },
+  { time: "1:00", job: "Lot 14 · Plumbing", who: "Plumbing sub" },
+]
+
+/**
+ * Illustration of the two halves of the business: a website lead coming in,
+ * and AI quietly handling the schedule and the paperwork. Plain HTML so it
+ * stays crisp, light, and readable.
+ */
+function HeroIllustration() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Blueprint grid */}
-      <div className="absolute inset-0 blueprint-grid opacity-60" />
+    <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+      {/* Soft backdrop */}
+      <div className="absolute -inset-6 sm:-inset-10 bg-sand rounded-[2.5rem] -rotate-2" aria-hidden />
 
-      {/* Radial vignette */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgb(2 6 23 / 0.75) 100%)" }}
-      />
+      <div className="relative flex flex-col gap-4">
+        {/* Lead card */}
+        <motion.div
+          {...fadeIn(0.5)}
+          className="self-end w-[88%] bg-white border border-sand-dark rounded-2xl shadow-[0_10px_30px_rgba(28,25,23,0.08)] p-4 flex items-center gap-3"
+        >
+          <span className="w-10 h-10 rounded-full bg-warm-tint text-warm flex items-center justify-center flex-shrink-0">
+            <PhoneIncoming className="w-5 h-5" strokeWidth={2} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-ink text-sm font-semibold">New bid request from your website</p>
+            <p className="text-ink-soft text-xs">Office build-out · 4,200 sq ft · 2 min ago</p>
+          </div>
+        </motion.div>
 
-      {/* Glow orbs */}
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-sky-600/8 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-blue-700/6 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-900/10 rounded-full blur-3xl" />
+        {/* Schedule card */}
+        <motion.div
+          {...fadeIn(0.65)}
+          className="bg-white border border-sand-dark rounded-2xl shadow-[0_14px_40px_rgba(28,25,23,0.10)] p-5"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <CalendarCheck className="w-5 h-5 text-brand" strokeWidth={2} />
+              <p className="text-ink font-semibold">Tuesday&apos;s job board</p>
+            </div>
+            <span className="text-[11px] font-semibold text-brand bg-brand-tint px-2.5 py-1 rounded-full">
+              Built automatically
+            </span>
+          </div>
+          <ul className="divide-y divide-sand-dark">
+            {schedule.map((row) => (
+              <li key={row.time} className="flex items-center gap-3 py-2.5 text-sm">
+                <span className="w-12 text-ink-soft tabular-nums">{row.time}</span>
+                <span className="flex-1 text-ink truncate">{row.job}</span>
+                <span className="text-ink-soft text-xs bg-sand px-2 py-0.5 rounded-full">{row.who}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-ink-soft">
+            Trades sequenced across job sites. Every crew and sub already has their times and addresses.
+          </p>
+        </motion.div>
 
-      {/* Circuit SVG traces */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-25"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ pointerEvents: "none" }}
-      >
-        {circuitPaths.map((d, i) => (
-          <path
-            key={i}
-            d={d}
-            fill="none"
-            stroke="#0ea5e9"
-            strokeWidth="1"
-            strokeDasharray="500"
-            strokeDashoffset="500"
-            style={{
-              animation: `circuit-flow ${3 + i * 0.8}s ease-in-out ${i * 1.2}s infinite`,
-            }}
-          />
-        ))}
-      </svg>
-
-      {/* Horizontal scan line */}
-      <div
-        className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent"
-        style={{ animation: "scan-line 8s linear infinite", top: 0 }}
-      />
+        {/* Paperwork card */}
+        <motion.div
+          {...fadeIn(0.8)}
+          className="w-[80%] bg-white border border-sand-dark rounded-2xl shadow-[0_10px_30px_rgba(28,25,23,0.08)] p-4 flex items-center gap-3"
+        >
+          <span className="w-10 h-10 rounded-full bg-brand-tint text-brand flex items-center justify-center flex-shrink-0">
+            <FileCheck2 className="w-5 h-5" strokeWidth={2} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-ink text-sm font-semibold">12 invoices filed for you</p>
+            <p className="text-ink-soft text-xs">Read, sorted, and entered. No typing.</p>
+          </div>
+          <Check className="w-5 h-5 text-emerald-600 flex-shrink-0" strokeWidth={2.5} />
+        </motion.div>
+      </div>
     </div>
   )
 }
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center bg-slate-950 overflow-hidden">
-      <CircuitBackground />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-16">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+    <section className="relative bg-cream overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20 lg:pt-40 lg:pb-28">
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-16 lg:gap-12 items-center">
 
           {/* Left — Text Content */}
           <div className="flex flex-col gap-6">
-
-            {/* Badge */}
-            <motion.div {...fadeIn(0.1)} className="inline-flex items-center gap-2 w-fit">
-              <span className="flex items-center gap-1.5 bg-sky-500/10 border border-sky-500/25 text-sky-400 text-xs font-semibold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
-                Built for Local Business
-              </span>
-            </motion.div>
-
-            {/* BashNTech logo */}
-            <motion.div {...fadeIn(0.2)}>
-              <Image
-                src="/logo8.png"
-                alt="BashNTech Logo"
-                width={200}
-                height={56}
-                className="object-contain h-[48px] w-auto"
-                priority
-              />
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              {...fadeIn(0.3)}
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] tracking-tight"
-            >
-              Websites Built to{" "}
-              <span className="text-gradient-shimmer">Work as Hard</span>{" "}
-              as You Do
-            </motion.h1>
-
-            {/* Subheadline */}
             <motion.p
-              {...fadeIn(0.45)}
-              className="text-slate-300 text-lg leading-relaxed max-w-xl"
+              {...fadeIn(0.1)}
+              className="text-warm text-sm font-semibold tracking-wide"
             >
-              BashNTech builds rugged, high-performing websites, automation
-              systems, and AI tools for businesses that get their hands dirty.
+              Websites · AI Consulting · Automation
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div {...fadeIn(0.6)} className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Link href="#featured-offer">
-                <motion.button
-                  whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(14,165,233,0.45)" }}
-                  whileTap={{ scale: 0.97 }}
-                  className="group flex items-center justify-center gap-2 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white px-7 py-3.5 rounded-xl font-semibold text-base shadow-lg shadow-sky-900/40 transition-all duration-300"
-                >
-                  Get a Free Website Audit
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </motion.button>
-              </Link>
+            <motion.h1
+              {...fadeIn(0.2)}
+              className="text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-[4.1rem] font-semibold text-ink tracking-tight"
+            >
+              Websites that win customers.{" "}
+              <span className="text-brand">AI that gives you your time&nbsp;back.</span>
+            </motion.h1>
 
-              <Link href="#services">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/15 hover:border-sky-500/40 text-white px-7 py-3.5 rounded-xl font-semibold text-base transition-all duration-300"
-                >
-                  See What We Build
-                </motion.button>
+            <motion.p
+              {...fadeIn(0.3)}
+              className="text-ink-soft text-lg sm:text-xl leading-relaxed max-w-xl"
+            >
+              BashNTech builds websites that bring in business, and AI tools
+              that take the busywork off your plate: crew and subcontractor
+              scheduling, paperwork that fills itself out, and custom models built around
+              how your business actually runs.
+            </motion.p>
+
+            <motion.div {...fadeIn(0.4)} className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-dark text-white px-7 py-4 rounded-full font-semibold text-base transition-colors duration-200"
+              >
+                Get a Free Consultation
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/ai-consulting"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-sand border border-sand-dark text-ink px-7 py-4 rounded-full font-semibold text-base transition-colors duration-200"
+              >
+                See What AI Can Do for You
               </Link>
             </motion.div>
 
+            <motion.p {...fadeIn(0.5)} className="text-ink-soft text-sm">
+              Free, no-pressure consultation. We reply within 1 business day.
+            </motion.p>
           </div>
 
-          {/* Right — 3D Object */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-            className="relative h-[420px] lg:h-[560px] flex items-center justify-center"
-          >
-            {/* Glow behind 3D */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-72 h-72 bg-sky-600/15 rounded-full blur-3xl animate-pulse-glow" />
-            </div>
-            <ThreeDHeroObject />
-          </motion.div>
+          {/* Right — Illustration */}
+          <HeroIllustration />
         </div>
-
       </div>
     </section>
   )

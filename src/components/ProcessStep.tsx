@@ -21,50 +21,30 @@ export default function ProcessStep({
   isLast = false,
 }: ProcessStepProps) {
   return (
-    <div className="relative flex flex-col items-center text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex flex-col"
+    >
       {/* Connector line */}
       {!isLast && (
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: delay + 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute top-10 left-[calc(50%+40px)] right-[calc(-50%+40px)] h-px hidden lg:block origin-left"
-          style={{
-            background: "linear-gradient(90deg, rgba(14,165,233,0.5), rgba(14,165,233,0.1))",
-          }}
+        <div
+          className="absolute top-7 left-16 right-0 border-t-2 border-dashed border-sand-dark hidden lg:block"
+          aria-hidden
         />
       )}
 
-      {/* Step circle */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mb-5"
-      >
-        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-600 to-blue-700 flex items-center justify-center shadow-lg shadow-sky-900/40 animate-pulse-glow">
-          <Icon className="w-8 h-8 text-white" strokeWidth={1.8} />
-        </div>
-        {/* Step number badge */}
-        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-950 border border-sky-500/50 flex items-center justify-center">
-          <span className="text-sky-400 text-xs font-bold">{number}</span>
-        </div>
-      </motion.div>
+      <div className="relative w-14 h-14 rounded-2xl bg-white border border-sand-dark flex items-center justify-center mb-5">
+        <Icon className="w-6 h-6 text-brand" strokeWidth={1.8} />
+        <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-warm text-white text-xs font-bold flex items-center justify-center">
+          {number}
+        </span>
+      </div>
 
-      {/* Text */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: delay + 0.15, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <h3 className="text-white font-bold text-xl mb-2">{title}</h3>
-        <p className="text-slate-400 text-sm leading-relaxed max-w-[200px] mx-auto">
-          {description}
-        </p>
-      </motion.div>
-    </div>
+      <h3 className="text-ink font-semibold text-xl mb-2">{title}</h3>
+      <p className="text-ink-soft text-sm leading-relaxed max-w-[240px]">{description}</p>
+    </motion.div>
   )
 }

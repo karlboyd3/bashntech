@@ -1,64 +1,60 @@
 "use client"
 
 import { motion } from "framer-motion"
-import {
-  Monitor,
-  BarChart3,
-  Zap,
-  Bot,
-  Megaphone,
-  Headphones,
-} from "lucide-react"
-import ServiceCard from "@/components/ServiceCard"
+import { Monitor, BrainCircuit, Check, ArrowRight } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
+import Link from "next/link"
 
-const services = [
+type Pillar = {
+  icon: LucideIcon
+  eyebrow: string
+  title: string
+  description: string
+  items: string[]
+  href: string
+  cta: string
+}
+
+const pillars: Pillar[] = [
   {
     icon: Monitor,
-    title: "Website Design & Development",
+    eyebrow: "Get found. Get the call.",
+    title: "Websites That Bring In Business",
     description:
-      "No website yet? We'll build it from scratch. Already have one that isn't working? We'll fix it. Either way, your site will work for you around the clock so you can focus on the job you actually love.",
+      "No website yet, or one that isn't pulling its weight? We build fast, good-looking sites that show up on Google and turn visitors into phone calls, bookings, and quote requests.",
+    items: [
+      "Custom website design & development",
+      "Redesigns of outdated or slow sites",
+      "Local SEO & Google visibility",
+      "Online booking, ordering & quote forms",
+      "Targeted ad campaigns",
+      "Ongoing support & maintenance",
+    ],
+    href: "/websites",
+    cta: "Learn more about websites",
   },
   {
-    icon: BarChart3,
-    title: "Data Analysis",
+    icon: BrainCircuit,
+    eyebrow: "Work smarter, not longer.",
+    title: "AI Consulting & Automation",
     description:
-      "Stop spending hours trying to make sense of spreadsheets and reports. We turn your numbers into clear answers so you can make confident decisions and get back to running your business.",
-  },
-  {
-    icon: Zap,
-    title: "Systems & Process Efficiency",
-    description:
-      "The repetitive tasks eating your day shouldn't be your problem. We streamline how your business operates so less falls on your plate and more gets done without you having to touch it.",
-  },
-  {
-    icon: Bot,
-    title: "AI Integration",
-    description:
-      "Imagine having an extra set of hands that never clocks out. We integrate AI into your workflow so routine work handles itself and you can focus on the parts of your business only you can do.",
-  },
-  {
-    icon: Megaphone,
-    title: "Advertisements",
-    description:
-      "Finding new customers shouldn't be a second job. We run targeted ad campaigns that bring the right people to you so your phone rings while you're out doing what you're good at.",
-  },
-  {
-    icon: Headphones,
-    title: "Ongoing Support & Maintenance",
-    description:
-      "Once we build something, we don't disappear. We keep everything running, updated, and healthy so you never have to stress about the tech side and can stay focused on what you do best.",
+      "Most small businesses lose hours every week to scheduling, data entry, and paperwork. We find where that time goes and build AI tools that handle it for you, without you having to become a tech expert.",
+    items: [
+      "Custom AI models built on your own data",
+      "Crew & subcontractor scheduling",
+      "Paperwork, invoice & form automation",
+      "AI assistants for calls, chat & email",
+      "Data analysis & live dashboards",
+      "Plain-English AI strategy for your business",
+    ],
+    href: "/ai-consulting",
+    cta: "Learn more about AI consulting",
   },
 ]
 
 export default function Services() {
   return (
-    <section id="services" className="relative py-24 bg-slate-950 overflow-hidden">
-      {/* Subtle dot grid */}
-      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
-
-      {/* Top edge fade */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950 to-transparent pointer-events-none" />
-
+    <section id="services" className="relative py-24 bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -68,29 +64,58 @@ export default function Services() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-sky-400 text-xs font-semibold uppercase tracking-widest mb-4 bg-sky-500/10 border border-sky-500/20 px-3.5 py-1.5 rounded-full">
-            What We Build
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 tracking-tight">
-            Everything You Need to{" "}
-            <span className="text-gradient">Grow and Operate</span>
+          <p className="text-warm text-sm font-semibold tracking-wide mb-3">What we do</p>
+          <h2 className="text-4xl sm:text-5xl font-semibold text-ink mb-5 tracking-tight">
+            Two ways we help your <span className="marker">business grow</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            From your website to your workflow, we help businesses look better,
-            run leaner, and reach more customers.
+          <p className="text-ink-soft text-lg max-w-2xl mx-auto leading-relaxed">
+            A website brings customers in the door. AI and automation keep the
+            back office from burying you once they do. We handle both.
           </p>
         </motion.div>
 
-        {/* Cards Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((service, i) => (
-            <ServiceCard
-              key={service.title}
-              icon={service.icon}
-              title={service.title}
-              description={service.description}
-              delay={i * 0.08}
-            />
+        {/* Pillars */}
+        <div className="grid lg:grid-cols-2 gap-6">
+          {pillars.map((pillar, i) => (
+            <motion.div
+              key={pillar.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
+              className="relative flex flex-col bg-cream border border-sand-dark rounded-3xl p-7 sm:p-9"
+            >
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <pillar.icon className="w-6 h-6 text-brand" strokeWidth={1.8} />
+                </div>
+                <div>
+                  <p className="text-ink-soft text-sm">
+                    {pillar.eyebrow}
+                  </p>
+                  <h3 className="text-ink font-semibold text-2xl tracking-tight">{pillar.title}</h3>
+                </div>
+              </div>
+
+              <p className="text-ink-soft leading-relaxed mb-6">{pillar.description}</p>
+
+              <ul className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mb-8">
+                {pillar.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-ink text-sm">
+                    <Check className="w-4 h-4 text-warm flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              <Link
+                href={pillar.href}
+                className="group mt-auto inline-flex items-center gap-2 text-brand hover:text-brand-dark font-semibold transition-colors"
+              >
+                {pillar.cta}
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
