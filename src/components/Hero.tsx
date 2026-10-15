@@ -105,7 +105,7 @@ export default function Hero() {
               {...fadeIn(0.1)}
               className="text-warm text-sm font-semibold tracking-wide"
             >
-              Websites · AI Consulting · Automation
+              BashNTech: websites, AI consulting &amp; automation
             </motion.p>
 
             <motion.h1
