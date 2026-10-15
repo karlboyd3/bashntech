@@ -98,11 +98,11 @@ export default function Footer() {
 
             {/* Contact */}
             <a
-              href="mailto:karl.boyd003@gmail.com"
+              href="mailto:hello@bashntech.com"
               className="flex items-center gap-2 text-ink-soft hover:text-brand text-sm transition-colors duration-200 mb-6"
             >
               <Mail className="w-4 h-4" />
-              karl.boyd003@gmail.com
+              hello@bashntech.com
             </a>
 
             {/* Social Icons */}

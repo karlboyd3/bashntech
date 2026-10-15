@@ -62,11 +62,11 @@ export default function FeaturedOffer({ isPage = false }: { isPage?: boolean }) 
             <p className="text-ink-soft">
               Prefer email?{" "}
               <a
-                href="mailto:karl.boyd003@gmail.com"
+                href="mailto:hello@bashntech.com"
                 className="inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-semibold underline underline-offset-4"
               >
                 <Mail className="w-4 h-4" />
-                karl.boyd003@gmail.com
+                hello@bashntech.com
               </a>
             </p>
           </motion.div>

@@ -99,7 +99,7 @@ export async function submitAuditRequest(input: AuditRequestData) {
   if (emailError) {
     console.error("Resend send error:", emailError)
     throw new Error(
-      "Sorry, your request didn't go through. Please email karl.boyd003@gmail.com directly."
+      "Sorry, your request didn't go through. Please email hello@bashntech.com directly."
     )
   }
 
