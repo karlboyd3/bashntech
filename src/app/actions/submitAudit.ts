@@ -1,6 +1,5 @@
 "use server"
 
-import { createServerClient } from "@/lib/supabase"
 import { Resend } from "resend"
 import { auditSchema } from "@/lib/auditSchema"
 
@@ -43,20 +42,6 @@ export async function submitAuditRequest(input: AuditRequestData) {
     website: escapeHtml(parsed.data.website),
     message: parsed.data.message ? escapeHtml(parsed.data.message) : "",
   }
-  const supabase = createServerClient()
-
-  // Save to Supabase (non-blocking — email still sends if this fails)
-  const { error: dbError } = await supabase.from("audit_requests").insert({
-    name: data.name,
-    email: data.email,
-    website: data.website || null,
-    business_type: data.businessType,
-    message: `[Interested in: ${parsed.data.interest}] ${parsed.data.message ?? ""}`.trim(),
-  })
-
-  if (dbError) {
-    console.error("Supabase insert error:", dbError)
-  }
 
   // Send notification email
   const resend = new Resend(process.env.RESEND_API_KEY)
@@ -64,11 +49,13 @@ export async function submitAuditRequest(input: AuditRequestData) {
   const { error: emailError } = await resend.emails.send({
     from: "BashNTech <notifications@bashntech.com>",
     to: process.env.NOTIFICATION_EMAIL ?? "karl.boyd003@gmail.com",
+    // Replying to the notification goes straight to the person who asked.
+    replyTo: parsed.data.email,
     subject: `New Lead: ${parsed.data.name} — ${data.interest} (${data.businessType})`,
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
         <div style="background: #0A0F1E; padding: 24px; border-radius: 12px 12px 0 0;">
-          <h1 style="color: #38BDF8; margin: 0; font-size: 20px;">New Website Audit Request</h1>
+          <h1 style="color: #38BDF8; margin: 0; font-size: 20px;">New Consultation Request</h1>
         </div>
         <div style="background: #f8fafc; padding: 24px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0;">
           <table style="width: 100%; border-collapse: collapse;">
@@ -99,21 +86,18 @@ export async function submitAuditRequest(input: AuditRequestData) {
             </tr>` : ""}
           </table>
           <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 12px;">
-            Submitted via BashNTech.com — view all leads in your <a href="https://supabase.com/dashboard" style="color: #0EA5E9;">Supabase dashboard</a>
+            Submitted via BashNTech.com — reply to this email to respond to them directly.
           </div>
         </div>
       </div>
     `,
   })
 
+  // Resend reports failures in its return value rather than throwing. Email
+  // is the only delivery path, so never show the visitor a success message
+  // for a lead that didn't reach the inbox.
   if (emailError) {
     console.error("Resend send error:", emailError)
-  }
-
-  // Resend reports failures in its return value rather than throwing, so
-  // without this check a lead that reached neither the DB nor the inbox
-  // would still show the visitor a success message.
-  if (dbError && emailError) {
     throw new Error(
       "Sorry, your request didn't go through. Please email karl.boyd003@gmail.com directly."
     )
