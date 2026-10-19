@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Mail } from "lucide-react"
+import { Mail, Phone } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -99,10 +99,17 @@ export default function Footer() {
             {/* Contact */}
             <a
               href="mailto:hello@bashntech.com"
-              className="flex items-center gap-2 text-ink-soft hover:text-brand text-sm transition-colors duration-200 mb-6"
+              className="flex items-center gap-2 text-ink-soft hover:text-brand text-sm transition-colors duration-200 mb-3"
             >
               <Mail className="w-4 h-4" />
               hello@bashntech.com
+            </a>
+            <a
+              href="tel:+15714497057"
+              className="flex items-center gap-2 text-ink-soft hover:text-brand text-sm transition-colors duration-200 mb-6"
+            >
+              <Phone className="w-4 h-4" />
+              (571) 449-7057
             </a>
 
             {/* Social Icons */}

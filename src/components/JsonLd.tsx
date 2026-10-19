@@ -23,6 +23,7 @@ const structuredData = {
       alternateName: ["Bash N Tech"],
       url: SITE_URL,
       email: "hello@bashntech.com",
+      telephone: "+1-571-449-7057",
       logo: `${SITE_URL}/logo-square.png`,
       image: `${SITE_URL}/opengraph-image.png`,
       description:

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Shield, Clock, Gauge, BrainCircuit, Mail } from "lucide-react"
+import { Shield, Clock, Gauge, BrainCircuit, Mail, Phone } from "lucide-react"
 import AuditForm from "@/components/AuditForm"
 
 const auditItems = [
@@ -59,16 +59,25 @@ export default function FeaturedOffer({ isPage = false }: { isPage?: boolean }) 
               ))}
             </div>
 
-            <p className="text-ink-soft">
-              Prefer email?{" "}
-              <a
-                href="mailto:hello@bashntech.com"
-                className="inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-semibold underline underline-offset-4"
-              >
-                <Mail className="w-4 h-4" />
-                hello@bashntech.com
-              </a>
-            </p>
+            <div className="text-ink-soft">
+              <p className="mb-2">Prefer to talk it through? Reach us directly:</p>
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2">
+                <a
+                  href="tel:+15714497057"
+                  className="inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-semibold underline underline-offset-4"
+                >
+                  <Phone className="w-4 h-4" />
+                  (571) 449-7057
+                </a>
+                <a
+                  href="mailto:hello@bashntech.com"
+                  className="inline-flex items-center gap-1.5 text-brand hover:text-brand-dark font-semibold underline underline-offset-4"
+                >
+                  <Mail className="w-4 h-4" />
+                  hello@bashntech.com
+                </a>
+              </div>
+            </div>
           </motion.div>
 
           {/* Right — Form */}
