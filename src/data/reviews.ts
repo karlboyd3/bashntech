@@ -14,4 +14,13 @@ export type Review = {
   url?: string
 }
 
-export const reviews: Review[] = []
+export const reviews: Review[] = [
+  {
+    // Excerpted from the public 5-star Google review, wording unchanged.
+    quote:
+      "I couldn't be happier with the incredible website BashNTech created for my company, Chico's Chili! From start to finish, their attention to detail was second to none. … What truly set them apart was their outstanding customer service—they were responsive, knowledgeable, and genuinely cared about delivering the best possible product.",
+    name: "Bryant Bolden",
+    business: "Owner, Chico's Chili",
+    url: "https://chicoschili.com",
+  },
+]
